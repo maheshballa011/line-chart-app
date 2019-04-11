@@ -7,6 +7,10 @@ body{
   background-color: #282c34;
 }
 
+circle{
+  cursor: pointer;
+}
+
 div.tooltip {	
   position: absolute;			
   text-align: center;			

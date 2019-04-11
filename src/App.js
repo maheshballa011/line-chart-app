@@ -38,18 +38,18 @@ InitChart(graphData, i) {
       left: 50
     },
     xRange = d3.scaleLinear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([d3.min(lineData, function (d) {
-        return d.x;
+        return d.year;
       }),
       d3.max(lineData, function (d) {
-        return d.x;
+        return d.year;
       })
     ]),
 
     yRange = d3.scaleLinear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([d3.min(lineData, function (d) {
-        return d.y;
+        return d.value;
       }),
       d3.max(lineData, function (d) {
-        return d.y;
+        return d.value;
       })
     ]),
 
@@ -77,10 +77,10 @@ InitChart(graphData, i) {
 
   var lineFunc = d3.line()
   .x(function (d) {
-    return xRange(d.x);
+    return xRange(d.year);
   })
   .y(function (d) {
-    return yRange(d.y);
+    return yRange(d.value);
   })
   .curve(d3.curveMonotoneX);
 
@@ -95,13 +95,13 @@ vis.append("svg:path")
       .enter().append("circle")
         .attr("r", 3.5)
         .attr("fill", "red")
-        .attr("cx", function(d) { return xRange(d.x); })
-        .attr("cy", function(d) { return yRange(d.y); })
+        .attr("cx", function(d) { return xRange(d.year); })
+        .attr("cy", function(d) { return yRange(d.value); })
         .on("mouseover", function(d) {		
           div.transition()		
               .duration(200)		
               .style("opacity", .9);		
-          div .html("Year: " + d.x + "<br/>Value: "  + d.y)	
+          div .html("Year: " + d.year + "<br/>Value: "  + d.value)	
               .style("left", (d3.event.pageX) + "px")		
               .style("top", (d3.event.pageY - 28) + "px");	
           })					
@@ -162,11 +162,16 @@ vis.append("svg:text")
             return;
           }
           return {
-            x: valueArray[0],
-            y: valueArray[1]
+            year: valueArray[0],
+            value: valueArray[1]
           }
         })
       };
+
+      if(!rowObject.data.length || !rowObject.name){
+        isInvalidFormat = true;
+        return;
+      }
 
      
       graphArray.push(rowObject);
