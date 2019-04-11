@@ -5,11 +5,23 @@ import * as d3 from "d3";
 
 class App extends Component {
 
+  constructor(props){
+    super(props);
+    this.state = {isInvalidFormat: false};
+  }
 
+clearChart(){
+  document.getElementById("chartContainer").innerHTML = "";
+}
 
 InitChart(graphData, i) {
 
   var lineData = graphData.data;
+
+  var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
 
   var svg = d3.select("#chartContainer").append("svg")
     .attr("width", 1000)
@@ -78,6 +90,27 @@ vis.append("svg:path")
   .attr("stroke-width", 2)
   .attr("fill", "none");
 
+  svg.selectAll("dot")
+        .data(lineData)
+      .enter().append("circle")
+        .attr("r", 3.5)
+        .attr("fill", "red")
+        .attr("cx", function(d) { return xRange(d.x); })
+        .attr("cy", function(d) { return yRange(d.y); })
+        .on("mouseover", function(d) {		
+          div.transition()		
+              .duration(200)		
+              .style("opacity", .9);		
+          div .html(d.x + "<br/>"  + d.y)	
+              .style("left", (d3.event.pageX) + "px")		
+              .style("top", (d3.event.pageY - 28) + "px");	
+          })					
+      .on("mouseout", function(d) {		
+          div.transition()		
+              .duration(500)		
+              .style("opacity", 0);	
+      });
+
 
 
 vis.append("svg:text")
@@ -95,6 +128,10 @@ vis.append("svg:text")
   onChange(e){
     let files = e.target.files;
     console.warn("data file", files);
+    if(files.length == 0){
+      this.clearChart();
+      return;
+    }
     let reader = new FileReader();
     reader.readAsText(files[0]);
     reader.onload=(e)=>{
@@ -105,12 +142,25 @@ vis.append("svg:text")
 
   formatDataForLineChart(csvData){
     let graphArray = [];
+    let isInvalidFormat = false;
     csvData.forEach(row => {
       let rowArray = row.split(",");
+      if(rowArray[0].indexOf("|") !== -1){
+        isInvalidFormat = true;
+        return;
+      }
       let rowObject = {
         name: rowArray[0],
         data: rowArray.splice(1).map(yearscore=>{
+          if(yearscore.indexOf("|")==-1 || yearscore.indexOf("|") !== yearscore.lastIndexOf("|")){
+            isInvalidFormat = true;
+            return;
+          }
           let valueArray = yearscore.split("|");
+          if(!valueArray[0] || !valueArray[1]){
+            isInvalidFormat = true;
+            return;
+          }
           return {
             x: valueArray[0],
             y: valueArray[1]
@@ -122,6 +172,15 @@ vis.append("svg:text")
       graphArray.push(rowObject);
     })
 
+    this.state.isInvalidFormat = isInvalidFormat;
+    if(isInvalidFormat){
+      document.getElementById('errorDiv').innerText = 'Please upload valid CSV file';
+      this.clearChart();
+      return;
+    }
+
+    document.getElementById('errorDiv').innerText = '';
+
     graphArray.forEach((graphData, i)=>{
       this.InitChart(graphData, i);
     });
@@ -130,14 +189,17 @@ vis.append("svg:text")
   }
 
   render() {
+   
     return (
       <div className="App">
         <header className="App-header">
           {/* <img src={logo} className="App-logo" alt="logo" /> */}
-      <div onSubmit={this.onFormSubmit}>
-        <input type="file" name="file" onChange={(e)=>this.onChange(e)} />
-      </div>
+     
         </header>
+        <div className="fileUploadContainer" onSubmit={this.onFormSubmit}>
+        <input type="file" name="file" onInput={(e)=>this.onChange(e)} accept=".csv" />
+        <div id="errorDiv"></div>
+      </div>
         <div id="chartContainer"></div>
         {/* <svg id="visualisation" width="1000" height="500"></svg> */}
       </div>

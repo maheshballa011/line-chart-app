@@ -1,6 +1,23 @@
+body{
+  background-color: #282c34;
+}
+
 .App {
   text-align: center;
   background-color: #282c34;
+}
+
+div.tooltip {	
+  position: absolute;			
+  text-align: center;			
+  width: 60px;					
+  height: 28px;					
+  padding: 2px;				
+  font: 12px sans-serif;		
+  background: lightsteelblue;	
+  border: 0px;		
+  border-radius: 8px;			
+  pointer-events: none;			
 }
 
 .App-logo {
@@ -14,9 +31,24 @@
   fill: #fff;
 }
 
+#errorDiv{
+  color: red;
+}
+
+.fileUploadContainer{
+  background-color: #282c34;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
