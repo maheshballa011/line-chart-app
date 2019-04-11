@@ -189,8 +189,24 @@ vis.append("svg:text")
     graphArray.forEach((graphData, i)=>{
       this.InitChart(graphData, i);
     });
-   
+    this.makePostCalltoSave(graphArray);
     console.warn(graphArray);
+  }
+
+  makePostCalltoSave(graphArray){
+    let reqPayload = {
+      graphData: graphArray
+    };
+
+
+    fetch('http://localhost:3001/api/filecontent', {
+      method: 'POST',
+      body: JSON.stringify(reqPayload)
+      }).then(response => {
+        response.json().then(res1 => {
+          console.log(res1);
+        });
+      });
   }
 
   render() {
@@ -199,7 +215,7 @@ vis.append("svg:text")
       <div className="App">
         <header className="App-header">
           {/* <img src={logo} className="App-logo" alt="logo" /> */}
-     
+          <div>Line chart application</div>
         </header>
         <div className="fileUploadContainer" onSubmit={this.onFormSubmit}>
         <input type="file" name="file" onInput={(e)=>this.onChange(e)} accept=".csv" />
