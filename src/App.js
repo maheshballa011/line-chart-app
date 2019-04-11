@@ -101,7 +101,7 @@ vis.append("svg:path")
           div.transition()		
               .duration(200)		
               .style("opacity", .9);		
-          div .html(d.x + "<br/>"  + d.y)	
+          div .html("Year: " + d.x + "<br/>Value: "  + d.y)	
               .style("left", (d3.event.pageX) + "px")		
               .style("top", (d3.event.pageY - 28) + "px");	
           })					
