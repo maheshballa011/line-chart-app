@@ -222,10 +222,10 @@ vis.append("svg:text")
         </header>
         <ul class="sidebar">
           <li>
-            <NavLink to="/" activeStyle={{color: 'green'}}>Home</NavLink>
+            <NavLink to="/" exact activeStyle={{color: 'green'}}>Home</NavLink>
           </li>
           <li>
-            <NavLink to="/linechart" activeStyle={{color: 'green'}}>Line Chart</NavLink>
+            <NavLink to="/linechart"  exact activeStyle={{color: 'green'}}>Line Chart</NavLink>
           </li>
         </ul>
         <Route path="/" exact render={() =>{
