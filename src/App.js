@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {BrowserRouter as Router, NavLink} from 'react-router-dom';
+import Route from 'react-router-dom/Route';
 import logo from './logo.svg';
 import './App.css';
 import * as d3 from "d3";
@@ -212,18 +214,37 @@ vis.append("svg:text")
   render() {
    
     return (
+      <Router>
       <div className="App">
         <header className="App-header">
           {/* <img src={logo} className="App-logo" alt="logo" /> */}
           <div>Line chart application</div>
         </header>
+        <ul class="sidebar">
+          <li>
+            <NavLink to="/" activeStyle={{color: 'green'}}>Home</NavLink>
+          </li>
+          <li>
+            <NavLink to="/linechart" activeStyle={{color: 'green'}}>Line Chart</NavLink>
+          </li>
+        </ul>
+        <Route path="/" exact render={() =>{
+          return (<h1>Welcome to Line Chart Application</h1>)
+        }
+          
+        } />
+        <Route path="/linechart" exact render={() =>{
+          return (
+            <div>
         <div className="fileUploadContainer" onSubmit={this.onFormSubmit}>
         <input type="file" name="file" onInput={(e)=>this.onChange(e)} accept=".csv" />
         <div id="errorDiv"></div>
       </div>
-        <div id="chartContainer"></div>
-        {/* <svg id="visualisation" width="1000" height="500"></svg> */}
+        <div id="chartContainer"></div></div>)
+    }        
+  } />
       </div>
+      </Router>
     );
   }
 }

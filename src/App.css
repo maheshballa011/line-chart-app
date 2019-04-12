@@ -2,6 +2,19 @@ body{
   background-color: #282c34;
 }
 
+.sidebar{
+  list-style: none;
+    float: left;
+    height: 100%;
+    position: absolute;
+    background: #ddd;
+    margin: 0;
+    padding: 10px;
+}
+ h1{
+   color: #fff;
+ }
+
 .App {
   text-align: center;
   background-color: #282c34;
