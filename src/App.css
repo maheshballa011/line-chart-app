@@ -1,5 +1,6 @@
 body{
   background-color: #282c34;
+  overflow: hidden;
 }
 
 .sidebar{
@@ -74,8 +75,21 @@ div.tooltip {
   color: black;
 }
 
+#chartContainer{
+  overflow: auto;
+  max-height: 500px;
+}
+
 .App-link {
   color: #61dafb;
+}
+
+.loader{
+  
+  position: fixed;
+  left: 43%;
+  top: 20%;
+
 }
 
 @keyframes App-logo-spin {
